@@ -1,0 +1,9 @@
+gate-api
+google-genai
+requests
+pandas
+numpy
+scikit-learn
+openpyxl
+matplotlib
+cryptography
