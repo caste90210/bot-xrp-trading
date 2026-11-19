@@ -50,7 +50,7 @@ import matplotlib.pyplot as plt
 # -----------------------------------------------------------------------------
 CONTRATO = "XRP_USDT"
 URL_VELAS = "https://api.gateio.ws/api/v4/futures/usdt/candlesticks"
-DIAS_HISTORIA = 14                 # ~10,000 velas de 2 min
+MINUTOS_HISTORIA = 9900            # Gate.io solo sirve las últimas 10,000 velas de 1 min (~6.9 días)
 TEMPORALIDAD_MIN = 2
 HORIZONTE = 3                      # velas de 2 min hacia adelante (6 minutos), igual que el bot
 PORCENTAJE_TEST = 0.20
@@ -68,10 +68,10 @@ SALIDA.mkdir(exist_ok=True)
 # -----------------------------------------------------------------------------
 # 1. Datos
 # -----------------------------------------------------------------------------
-def descargar_velas_1m(dias=DIAS_HISTORIA):
+def descargar_velas_1m(minutos=MINUTOS_HISTORIA):
     """Velas de 1 min de la API pública de Gate.io, en bloques de 900 minutos."""
     fin = int(time.time()) // 60 * 60
-    inicio = fin - dias * 24 * 3600
+    inicio = fin - minutos * 60
     filas, t = [], inicio
     while t < fin:
         t_fin = min(t + 900 * 60, fin)
@@ -99,7 +99,7 @@ def velas_2m(df1):
     return v
 
 
-def datos_sinteticos(n=10000):
+def datos_sinteticos(n=4950):
     """Solo para probar el script sin internet (NO se usa para los resultados)."""
     rng = np.random.default_rng(SEMILLA)
     c = 1.0 * np.exp(np.cumsum(rng.normal(0, 0.0012, n)))
@@ -200,6 +200,9 @@ def main(sintetico=False):
     tabla_c = pd.DataFrame({m: metricas_clasificacion(yte, p) for m, p in pred_c.items()}).T.round(4)
     tabla_c.to_csv(SALIDA / "metricas_clasificacion.csv")
 
+    pd.DataFrame([{"modelo": m, "TN": cm[0, 0], "FP": cm[0, 1], "FN": cm[1, 0], "TP": cm[1, 1]}
+                  for m, cm in ((m, confusion_matrix(yte, p)) for m, p in pred_c.items())]
+                 ).to_csv(SALIDA / "matrices_confusion.csv", index=False)
     fig, axs = plt.subplots(1, 3, figsize=(13, 4))
     for ax, (m, p) in zip(axs, pred_c.items()):
         cm = confusion_matrix(yte, p)
@@ -229,6 +232,12 @@ def main(sintetico=False):
               "Ingenuo (random walk)": test.close.values}
     tabla_r = pd.DataFrame({m: metricas_regresion(yte_r.values, np.asarray(p)) for m, p in pred_r.items()}).T
     tabla_r.to_csv(SALIDA / "metricas_regresion.csv")
+
+    pd.DataFrame({"precio_actual": test.close.values, "precio_real_t3": yte_r.values,
+                  "pred_rf": np.asarray(pred_r["Random Forest (bot)"]), "pred_knn": np.asarray(pred_r["KNN"]),
+                  "real_sube": yte.values, "pred_rf_sube": pred_c["Random Forest (bot)"],
+                  "prob_rf_sube": rf_c.predict_proba(Xte)[:, 1]},
+                 index=test.index).to_csv(SALIDA / "predicciones_test.csv", float_format="%.6f")
 
     # ---------- Diebold-Mariano ----------
     err = {m: yte_r.values - np.asarray(p) for m, p in pred_r.items()}
