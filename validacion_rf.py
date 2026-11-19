@@ -210,7 +210,7 @@ def main(sintetico=False):
         for i in range(2):
             for j in range(2):
                 ax.text(j, i, cm[i, j], ha="center", va="center", fontsize=13,
-                        color="white" if cm[i, j] > cm.max() / 2 else "black")
+                        color="white" if cm[i, j] > (cm.max() + cm.min()) / 2 else "black")
         ax.set_xticks([0, 1], ["Baja/Sell", "Sube/Buy"])
         ax.set_yticks([0, 1], ["Baja/Sell", "Sube/Buy"])
         ax.set_xlabel("Predicción")
@@ -300,7 +300,9 @@ def main(sintetico=False):
         for i in range(piv.shape[0]):
             for j in range(piv.shape[1]):
                 ax.text(j, i, f"{piv.values[i, j]:.5f}" if col == "RMSE" else f"{piv.values[i, j]:.3f}",
-                        ha="center", va="center", fontsize=8)
+                        ha="center", va="center", fontsize=8,
+                        color="white" if ((piv.values[i, j] - piv.values.min()) / (np.ptp(piv.values) or 1)
+                                         > 0.5) != cmap.endswith("_r") else "black")
         fig.colorbar(im, ax=ax, shrink=0.8)
     fig.suptitle("Simulación de hiperparámetros del Random Forest")
     fig.tight_layout()

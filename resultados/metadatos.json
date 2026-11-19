@@ -1,0 +1,9 @@
+{
+  "fuente": "Gate.io API pública, futuros XRP_USDT",
+  "velas": 4935,
+  "inicio_utc": "2026-11-13 02:54:00+00:00",
+  "fin_utc": "2026-11-19 23:22:00+00:00",
+  "train": 3945,
+  "test": 987,
+  "horizonte_velas": 3
+}

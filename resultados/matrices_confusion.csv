@@ -1,0 +1,4 @@
+modelo,TN,FP,FN,TP
+Random Forest (bot),359,163,334,131
+KNN,319,203,280,185
+Base (momentum),269,253,250,215

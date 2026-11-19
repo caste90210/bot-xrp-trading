@@ -1,0 +1,4 @@
+Modelo 1,Modelo 2,DM (HLN),p-valor,Conclusión (α=5%)
+Random Forest (bot),Ingenuo (random walk),1.7327,0.0835,Sin diferencia significativa
+Random Forest (bot),KNN,-1.3716,0.1705,Sin diferencia significativa
+KNN,Ingenuo (random walk),2.4287,0.0153,Ingenuo (random walk) tiene menor error (significativo)

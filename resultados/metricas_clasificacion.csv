@@ -1,0 +1,4 @@
+,Accuracy,Precision,Recall,F1-Score
+Random Forest (bot),0.4965,0.4456,0.2817,0.3452
+KNN,0.5106,0.4768,0.3978,0.4338
+Base (momentum),0.4904,0.4594,0.4624,0.4609
