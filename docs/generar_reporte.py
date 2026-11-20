@@ -96,22 +96,9 @@ def main():
 
     s = []
     # ---------------- Portada ----------------
-    s += [Spacer(1, 3.2 * cm),
-          p("PROYECTO FINAL INTEGRADOR", ParagraphStyle("k", parent=H2, alignment=TA_CENTER, fontSize=11)),
-          p("Finanzas Computacionales, Algoritmos Cuantitativos e Inteligencia Artificial",
-            ParagraphStyle("k2", parent=N, alignment=TA_CENTER)),
-          Spacer(1, 1.2 * cm),
-          p("Bot de trading algorítmico XRP/USDT con Random Forest, VaR/CVaR y agente Gemini, "
-            "desplegado 24/7 en Google Cloud e integrado con la app RiskSignal AI",
-            ParagraphStyle("T", parent=H1, fontSize=19, leading=25, alignment=TA_CENTER)),
-          Spacer(1, 0.8 * cm),
-          p("Reporte técnico", ParagraphStyle("k3", parent=H2, alignment=TA_CENTER)),
-          Spacer(1, 2.2 * cm),
-          tabla([["Autor", "Patricio Castellanos"],
-                 ["Fecha", "19 de noviembre de 2026"],
-                 ["Modalidad", "Opción 3 (bot en VM, Gate.io Testnet) + Opción 6 (app de IA en Google AI Studio)"],
-                 ["Repositorio", REPO],
-                 ["App", APP]], [3.5 * cm, 11.5 * cm], cab=False),
+    s += [Spacer(1, 8.5 * cm),
+          p("Proyecto Integrador<br/>Finanzas Computacionales",
+            ParagraphStyle("T", parent=H1, fontSize=30, leading=40, alignment=TA_CENTER)),
           PageBreak()]
 
     # ---------------- Resumen ----------------
